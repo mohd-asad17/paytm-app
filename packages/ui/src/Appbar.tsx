@@ -1,4 +1,4 @@
-import {signIn, signOut} from 'next-auth/react'
+import {signIn} from 'next-auth/react'
 import { Button } from "./button";
 
 interface AppbarProps {
@@ -6,7 +6,7 @@ interface AppbarProps {
         name?: string | null
     },
     onSignin: typeof signIn
-    onSignout: typeof signOut
+    onSignout: any
 }
 
 export const Appbar = ({user, onSignin, onSignout}: AppbarProps) => {
