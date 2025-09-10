@@ -38,17 +38,17 @@ export default async function TransferComponent() {
     const balance = await getBalance();
     const transactions = await getOnRampTransaction();
 
-    return <div>
-        <div>
+    return <div className="w-screen">
+        <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
             Transfer
         </div>
-        <div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">
             <div>
                 <AddmoneyCard />
             </div>
             <div>
                 <BalanceCard amount={balance.amount} locked={balance.locked} />
-                <div>
+                <div className="pt-4">
                     <OnRampTransaction transactions={transactions} />
                 </div>
             </div>
