@@ -8,17 +8,16 @@ import db from "@repo/db";
 export async function createOnRampTransaction(amount: number, provider: string) {
     const session = await getServerSession(authOptions);
     const token =  Math.random().toString();
-    const userId = session.user.id;
-    if(!userId){
+     if (!session?.user || !session.user?.id) {
         return {
-            message: "you are not logged in"
+            message: "Unauthenticated request"
         }
     }
 
     await db.onRampTransaction.create({
         data: {
-            userId: Number(userId),
-            amount : amount,
+            userId: Number(session?.user?.id),
+            amount : amount * 100,
             status: "Processing",
             startTime: new Date(),
             provider,

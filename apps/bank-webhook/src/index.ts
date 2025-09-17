@@ -1,13 +1,18 @@
 import express from "express";
 import db from "@repo/db";
-
 const app = express();
 
+
+app.use(express.json());
 // This is the endpoint which hit to the hdfc bank server which tells the bank server that this is the userId in my db and amount to be credit in the wallet from the bank so that transaction is happened and bank server tells our backend that payment has been done you need to update  and increase the amount in your db.
 
 app.post("/hdfcWebhook", async (req, res) => {
 
-    const paymentInfo = {
+    const paymentInfo:{
+        token: string;
+        userId: string;
+        amount: string;
+    } = {
         token: req.body.token,
         userId: req.body.user_identifier,
         amount: req.body.amount
@@ -41,11 +46,11 @@ try {
 await db.$transaction([
     db.balance.update({
         where: {
-            userId: paymentInfo.userId
+            userId: Number(paymentInfo.userId)
         },
         data:{
             amount: {
-                increment: paymentInfo.amount
+                increment: Number(paymentInfo.amount)
             }
         }
     }),

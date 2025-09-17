@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-key */
+
 import { Card } from "@repo/ui/card";
 
 
@@ -19,7 +19,7 @@ export const OnRampTransaction = ({transactions}: {
     }
     return <Card title={"Recent Transactions"}>
         <div className="pt-2">
-            {transactions.map(t => <div className="flex justify-between">
+            {transactions.map(t => <div key={t.amount} className="flex justify-between">
                 <div >
                     <div className="text-sm">
                         Recieved INR
@@ -28,7 +28,7 @@ export const OnRampTransaction = ({transactions}: {
                         {t.time.toDateString()}
                     </div>
                 </div>
-                <div className="flex flex-col justify-between">
+                <div  className="flex flex-col justify-between">
                     +Rs {t.amount/100}
                 </div>
             </div>)}
