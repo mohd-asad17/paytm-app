@@ -1,14 +1,13 @@
-import prisma from "@repo/db"
-import { getServerSession } from "next-auth"
-import { authOptions } from "../../lib/auth"
+import db from "@repo/db";
 import { AddmoneyCard } from "../../../components/AddmoneyCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransaction } from "../../../components/OnRampTransaction";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
 
-
-async function getBalance(){
+async function getBalance() {
     const session = await getServerSession(authOptions);
-    const balance = await prisma.balance.findFirst({
+    const balance = await db.balance.findFirst({
         where: {
             userId: Number(session?.user?.id)
         }
@@ -19,14 +18,14 @@ async function getBalance(){
     }
 }
 
-async function getOnRampTransaction() {
+async function getOnRampTransactions() {
     const session = await getServerSession(authOptions);
-    const transaction = await prisma.onRampTransaction.findMany({
+    const txns = await db.onRampTransaction.findMany({
         where: {
-            userId: Number(session.user?.id)
+            userId: Number(session?.user?.id)
         }
     });
-    return transaction.map(t => ({
+    return txns.map(t => ({
         time: t.startTime,
         amount: t.amount,
         status: t.status,
@@ -36,7 +35,7 @@ async function getOnRampTransaction() {
 
 export default async function TransferComponent() {
     const balance = await getBalance();
-    const transactions = await getOnRampTransaction();
+    const transactions = await getOnRampTransactions();
 
     return <div className="w-screen">
         <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
